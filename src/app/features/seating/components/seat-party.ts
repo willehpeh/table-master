@@ -6,11 +6,12 @@ import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operat
 import { NoAvailableTablesComponent } from './no-available-tables';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EMPTY } from 'rxjs';
+import { PartySizeInputComponent } from './party-size-input';
 
 @Component({
   selector: 'app-seat-party',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, NoAvailableTablesComponent],
+  imports: [ReactiveFormsModule, CommonModule, NoAvailableTablesComponent, PartySizeInputComponent],
   template: `
 		<div class="px-4 sm:px-6">
 			<div class="max-w-lg mx-auto">
@@ -22,28 +23,9 @@ import { EMPTY } from 'rxjs';
 				<div
 						class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-700/30">
 					<form [formGroup]="seatPartyForm" (ngSubmit)="onAssignTable()" class="space-y-6">
-
-						<!-- Party Size Input -->
+            
 						<div class="space-y-3">
-							<label for="partySize" class="flex items-center space-x-2 text-sm font-medium text-gray-300">
-								<span>Party Size</span>
-							</label>
-							<div class="relative">
-								<input type="number"
-											 id="partySize"
-											 [formControl]="partySizeCtrl"
-											 min="1"
-											 max="12"
-											 data-testid="party-size-input"
-											 placeholder="How many guests?"
-											 class="w-full px-4 py-4 bg-gray-700/50 border border-gray-600/50 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200 backdrop-blur-sm">
-								<div class="absolute inset-y-0 right-0 flex items-center pr-4">
-									<svg class="w-5 h-5 text-gray-400" stroke="currentColor" viewBox="0 0 24 24">
-										<path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-													d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-									</svg>
-								</div>
-							</div>
+							<app-party-size-input [partySizeCtrl]="partySizeCtrl"/>
 						</div>
 
 						<!-- Table Selection (shown when party size > 0) -->
