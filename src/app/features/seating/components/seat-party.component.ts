@@ -44,11 +44,6 @@ import { finalize } from 'rxjs/operators';
               </div>
             </div>
             
-            <!-- Debug info for development -->
-            <div class="text-xs text-gray-500 bg-gray-800/30 rounded-lg p-2 border border-gray-700/30">
-              Debug: Party size = {{ partySize() }}, Available tables = {{ availableTables().length }}
-            </div>
-            
             <!-- Table Selection (shown when party size > 0) -->
             @if (partySize() && partySize()! > 0) {
               <div class="space-y-6 animate-in slide-in-from-bottom-4 duration-300">
@@ -135,15 +130,15 @@ import { finalize } from 'rxjs/operators';
 export class SeatPartyComponent {
   private tableFacade = inject(TableFacade);
   private fb = inject(FormBuilder);
-  
+
   seatPartyForm = this.fb.group({
     partySize: [null as number | null, [Validators.required, Validators.min(1), Validators.max(12)]],
     selectedTableId: ['', Validators.required]
   });
-  
+
   // Use a signal to track party size that updates when form changes
   private partySizeSignal = signal<number | null>(null);
-  
+
   constructor() {
     // Subscribe to form changes and update signal
     this.seatPartyForm.get('partySize')?.valueChanges.subscribe(value => {
@@ -151,27 +146,27 @@ export class SeatPartyComponent {
       this.partySizeSignal.set(numValue);
     });
   }
-  
+
   partySize = computed(() => this.partySizeSignal());
-  
+
   availableTables = computed(() => {
     const size = this.partySize();
     if (!size || size <= 0) return [];
-    
+
     const tables = this.tableFacade.allTables()();
     return tables.filter(table => table.status === 'available' && table.capacity >= size);
   });
-  
+
   isAssigning = signal(false);
-  
+
   // Output event to notify parent component when party is seated
   partySeated = output<void>();
-  
+
   onAssignTable(): void {
     if (this.seatPartyForm.valid) {
       const { partySize, selectedTableId } = this.seatPartyForm.value;
       this.isAssigning.set(true);
-      
+
       this.tableFacade.seatPartyAtTable(selectedTableId!, partySize!)
         .pipe(
           finalize(() => this.isAssigning.set(false))
