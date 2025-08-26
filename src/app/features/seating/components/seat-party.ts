@@ -127,7 +127,7 @@ import { finalize } from 'rxjs/operators';
     </div>
   `
 })
-export class SeatPartyComponent {
+export class SeatParty {
   private tableFacade = inject(TableFacade);
   private fb = inject(FormBuilder);
 
