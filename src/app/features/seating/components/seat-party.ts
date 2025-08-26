@@ -2,8 +2,10 @@ import { Component, computed, inject, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TableFacade } from '../../../core/facades/table.facade';
-import { finalize } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { NoAvailableTablesComponent } from './no-available-tables';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-seat-party',
@@ -124,59 +126,67 @@ import { NoAvailableTablesComponent } from './no-available-tables';
   `
 })
 export class SeatParty {
+  isAssigning = signal(false);
+  // Output event to notify parent component when party is seated
+  partySeated = output<void>();
   private tableFacade = inject(TableFacade);
   private fb = inject(FormBuilder);
-
+  partySizeCtrl = this.fb.control(null, [Validators.required, Validators.min(1), Validators.max(12)]);
   seatPartyForm = this.fb.group({
-    partySize: [null as number | null, [Validators.required, Validators.min(1), Validators.max(12)]],
+    partySize: this.partySizeCtrl,
     selectedTableId: ['', Validators.required]
   });
-
-  // Use a signal to track party size that updates when form changes
   private partySizeSignal = signal<number | null>(null);
-
-  constructor() {
-    // Subscribe to form changes and update signal
-    this.seatPartyForm.get('partySize')?.valueChanges.subscribe(value => {
-      const numValue = value ? Number(value) : null;
-      this.partySizeSignal.set(numValue);
-    });
-  }
-
   partySize = computed(() => this.partySizeSignal());
-
   availableTables = computed(() => {
     const size = this.partySize();
-    if (!size || size <= 0) return [];
+    if (!size || size <= 0) {
+      return [];
+    }
 
     const tables = this.tableFacade.allTables()();
     return tables.filter(table => table.status === 'available' && table.capacity >= size);
   });
-
   noTablesAvailable = computed(() => this.availableTables().length === 0);
 
-  isAssigning = signal(false);
-
-  // Output event to notify parent component when party is seated
-  partySeated = output<void>();
+  constructor() {
+    this.updatePartySizeSignalOnFormCtrlChange();
+  }
 
   onAssignTable(): void {
-    if (this.seatPartyForm.valid) {
-      const { partySize, selectedTableId } = this.seatPartyForm.value;
-      this.isAssigning.set(true);
-
-      this.tableFacade.seatPartyAtTable(selectedTableId!, partySize!)
-        .pipe(
-          finalize(() => this.isAssigning.set(false))
-        )
-        .subscribe({
-          next: () => {
-            this.seatPartyForm.reset();
-            // Emit event to notify parent that party was seated successfully
-            this.partySeated.emit();
-          },
-          error: (error) => console.error('Failed to seat party:', error)
-        });
+    if (!this.seatPartyForm.valid) {
+      return;
     }
+    const { partySize, selectedTableId } = this.seatPartyForm.value;
+    this.isAssigning.set(true);
+
+    this.assignTable(selectedTableId!, partySize!);
+  }
+
+  private assignTable(selectedTableId: string, partySize: number) {
+    this.tableFacade.seatPartyAtTable(selectedTableId, partySize)
+      .pipe(
+        tap(() => {
+          this.isAssigning.set(false);
+          this.seatPartyForm.reset();
+          this.partySeated.emit();
+        }),
+        catchError(error => {
+          console.error('Failed to seat party:', error);
+          return EMPTY;
+        })
+      ).subscribe();
+  }
+
+  private updatePartySizeSignalOnFormCtrlChange() {
+    this.partySizeCtrl.valueChanges.pipe(
+      takeUntilDestroyed(),
+      debounceTime(300),
+      distinctUntilChanged(),
+      tap(value => {
+        const numValue = value ? Number(value) : null;
+        this.partySizeSignal.set(numValue);
+      })
+    ).subscribe();
   }
 }
