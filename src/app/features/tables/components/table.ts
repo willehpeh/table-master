@@ -24,10 +24,7 @@ import { TableStatusDotComponent } from './table-status-dot';
 				<div class="text-sm font-medium opacity-90">{{ displayService.formatStatus(table().status) }}</div>
 				<div class="text-xs opacity-70">{{ table().capacity }} seats</div>
 			</div>
-
-			<!-- Hover glow effect -->
-			<div
-					class="absolute inset-0 rounded-2xl bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      
 		</div>
   `
 })
