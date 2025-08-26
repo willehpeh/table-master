@@ -1,6 +1,6 @@
-import { Component, inject, signal, computed, effect, output } from '@angular/core';
+import { Component, computed, inject, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TableFacade } from '../../../core/facades/table.facade';
 import { finalize } from 'rxjs/operators';
 

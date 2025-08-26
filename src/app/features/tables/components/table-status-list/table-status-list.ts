@@ -1,8 +1,8 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Table } from '../../../shared/models/table.model';
-import { EmptyTableComponent } from './empty-table';
-import { TableComponent } from './table';
+import { Table } from '../../../../shared/models/table.model';
+import { EmptyTableComponent } from './table/empty-table';
+import { TableComponent } from './table/table';
 
 @Component({
   selector: 'app-table-status-list',
@@ -27,6 +27,6 @@ import { TableComponent } from './table';
 		</div>
   `
 })
-export class TableStatusListComponent {
+export class TableStatusList {
   tables = input<Table[]>([]);
 }

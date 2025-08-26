@@ -1,6 +1,6 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { Table, TableStatus } from '../../../shared/models/table.model';
-import { TableDisplayService } from '../../../core/services/table-display.service';
+import { Table, TableStatus } from '../../../../../shared/models/table.model';
+import { TableDisplayService } from '../../../../../core/services/table-display.service';
 import { TableIconComponent } from './table-icon';
 import { TableStatusDotComponent } from './table-status-dot';
 

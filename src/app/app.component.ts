@@ -1,13 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TableStatusListComponent } from './features/tables/components/table-status-list.component';
+import { TableStatusList } from './features/tables/components/table-status-list/table-status-list';
 import { SeatPartyComponent } from './features/seating/components/seat-party.component';
 import { TableFacade } from './core/facades/table.facade';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, TableStatusListComponent, SeatPartyComponent],
+  imports: [CommonModule, TableStatusList, SeatPartyComponent],
   template: `
     <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 text-white">
       <header class="bg-gray-800/90 backdrop-blur-xl border-b border-gray-700/50 sticky top-0 z-50">
@@ -59,9 +59,9 @@ import { TableFacade } from './core/facades/table.facade';
 })
 export class AppComponent {
   currentView = signal<'tables' | 'seating'>('tables');
-  
+
   protected tableFacade = inject(TableFacade);
-  
+
   onPartySeated(): void {
     // Redirect to tables page after successfully seating a party
     this.currentView.set('tables');
