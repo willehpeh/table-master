@@ -10,7 +10,7 @@ import { TableDisplayService } from '../../../core/services/table-display.servic
   template: `
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 p-6">
       @for (table of tables(); track table.id) {
-        <div class="table-status-badge rounded-lg p-4 text-center shadow-lg"
+        <div class="table-status-badge rounded-lg p-4 text-center shadow-md"
              [class]="displayService.getStatusColor(table.status)"
              [attr.data-testid]="'table-' + table.id + '-status'">
           <div class="text-lg font-bold">Table {{ table.number }}</div>

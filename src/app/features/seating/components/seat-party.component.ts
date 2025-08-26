@@ -9,7 +9,7 @@ import { finalize } from 'rxjs/operators';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   template: `
-    <div class="max-w-md mx-auto bg-gray-800 rounded-lg p-6 shadow-xl">
+    <div class="max-w-md mx-auto bg-gray-800 rounded-lg p-6 shadow-lg">
       <h3 class="text-xl font-bold text-white mb-6">Seat New Party</h3>
       
       <form [formGroup]="seatPartyForm" (ngSubmit)="onAssignTable()" class="space-y-4">
