@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, Signal } from '@angular/core';
+import { computed, inject, Injectable, signal, Signal } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { TableApiService } from '../services/table-api.service';
@@ -19,6 +19,17 @@ export class TableFacade {
     }
 
     return this.tablesState.asReadonly();
+  }
+
+  availableTablesForPartySize(partySize: number): Signal<Table[]> {
+    return computed(() => {
+      if (!partySize || partySize <= 0) {
+        return [];
+      }
+
+      const tables = this.allTables()();
+      return tables.filter(table => table.status === 'available' && table.capacity >= partySize);
+    });
   }
 
   updateTableStatus(tableId: string, status: TableStatus): Observable<Table> {

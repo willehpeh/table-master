@@ -1,9 +1,9 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { NoAvailableTablesComponent } from './no-available-tables';
-import { Table } from '../../../shared/models/table.model';
 import { AvailableTablesIcon } from './available-tables-icon';
+import { TableFacade } from '../../../core/facades/table.facade';
 
 @Component({
   selector: 'app-table-selection',
@@ -40,51 +40,19 @@ import { AvailableTablesIcon } from './available-tables-icon';
 					</div>
 				}
 			</div>
-
-			<!-- Submit Button -->
-			<button type="submit"
-							[disabled]="formIsInvalid() || isAssigning()"
-							data-testid="assign-button"
-							(click)="onSubmit()"
-							class="relative w-full group bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-600 disabled:to-gray-700 disabled:opacity-50 text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-600/25 transform hover:scale-[1.02] disabled:hover:scale-100 disabled:hover:shadow-none">
-
-				@if (isAssigning()) {
-					<div class="flex items-center justify-center space-x-3">
-						<svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
-							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-											stroke-width="4"></circle>
-							<path class="opacity-75" fill="currentColor"
-										d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-						</svg>
-						<span>Seating Party...</span>
-					</div>
-				} @else {
-					<div class="flex items-center justify-center space-x-3">
-						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-						</svg>
-						<span>Seat Party</span>
-					</div>
-				}
-
-				<!-- Button glow effect -->
-				<div
-						class="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-400 to-blue-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-			</button>
 		</div>
   `
 })
 export class TableSelectionComponent {
+  private tableFacade = inject(TableFacade);
+
   partySize = input.required<number>();
-  availableTables = input.required<Table[]>();
-  noTablesAvailable = computed(() => this.availableTables().length === 0);
   selectedTableIdCtrl = input.required<FormControl<string>>();
-  formIsInvalid = input.required<boolean>();
-  isAssigning = input.required<boolean>();
+  isAssigning = input(false);
 
-  submit = output<void>();
+  availableTables = computed(() => {
+    return this.tableFacade.availableTablesForPartySize(this.partySize())();
+  });
 
-  onSubmit(): void {
-    this.submit.emit();
-  }
+  noTablesAvailable = computed(() => this.availableTables().length === 0);
 }
