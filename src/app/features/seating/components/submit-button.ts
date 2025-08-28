@@ -30,8 +30,7 @@ import { CommonModule } from '@angular/common';
           <span>{{ buttonText() }}</span>
         </div>
       }
-
-      <!-- Button glow effect -->
+      
       <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-400 to-blue-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
     </button>
   `
@@ -41,7 +40,7 @@ export class SubmitButtonComponent {
   isLoading = input<boolean>(false);
   buttonText = input<string>('Submit');
   loadingText = input<string>('Loading...');
-  
+
   submit = output<void>();
 
   onSubmit(): void {

@@ -8,13 +8,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EMPTY } from 'rxjs';
 import { PartySizeInputComponent } from './party-size-input';
 import { TableSelectionComponent } from './table-selection';
-import { SeatingParty } from './seating-party';
 import { SubmitButtonComponent } from './submit-button';
 
 @Component({
   selector: 'app-seat-party',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, PartySizeInputComponent, TableSelectionComponent, SeatingParty, SubmitButtonComponent],
+  imports: [ReactiveFormsModule, CommonModule, PartySizeInputComponent, TableSelectionComponent, SubmitButtonComponent],
   template: `
 		<div class="px-4 sm:px-6">
 			<div class="max-w-lg mx-auto">
