@@ -48,10 +48,11 @@ import { SubmitButtonComponent } from './submit-button';
   `
 })
 export class SeatParty {
+  isAssigning = signal(false);
+  partySize = signal<number | null>(null);
   private tableFacade = inject(TableFacade);
   private router = inject(Router);
   private fb = inject(FormBuilder);
-  isAssigning = signal(false);
   partySizeCtrl = this.fb.control(null, {
     validators: [Validators.required, Validators.min(1), Validators.max(12)]
   });
@@ -60,7 +61,6 @@ export class SeatParty {
     partySize: this.partySizeCtrl,
     selectedTableId: this.selectedTableIdCtrl,
   });
-  partySize = signal<number | null>(null);
 
   constructor() {
     this.updatePartySizeSignalOnFormCtrlChange();
