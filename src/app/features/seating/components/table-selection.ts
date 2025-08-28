@@ -10,7 +10,7 @@ import { TableFacade } from '../../../core/facades/table.facade';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, NoAvailableTablesComponent, AvailableTablesIcon],
   template: `
-		<div class="space-y-6 animate-in slide-in-from-bottom-4 duration-300">
+		<div class="space-y-6 animate-in slide-in-from-bottom-4 duration-300 mb-6">
 			<div class="space-y-3">
 				<label for="selectedTable" class="flex items-center space-x-2 text-sm font-medium text-gray-300">
 					<app-available-tables-icon/>

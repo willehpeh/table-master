@@ -9,11 +9,12 @@ import { EMPTY } from 'rxjs';
 import { PartySizeInputComponent } from './party-size-input';
 import { TableSelectionComponent } from './table-selection';
 import { SeatingParty } from './seating-party';
+import { SubmitButtonComponent } from './submit-button';
 
 @Component({
   selector: 'app-seat-party',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, PartySizeInputComponent, TableSelectionComponent, SeatingParty],
+  imports: [ReactiveFormsModule, CommonModule, PartySizeInputComponent, TableSelectionComponent, SeatingParty, SubmitButtonComponent],
   template: `
 		<div class="px-4 sm:px-6">
 			<div class="max-w-lg mx-auto">
@@ -35,26 +36,11 @@ import { SeatingParty } from './seating-party';
 																	 [selectedTableIdCtrl]="selectedTableIdCtrl"
 																	 [isAssigning]="isAssigning()"/>
 
-							<button type="submit"
-											[disabled]="seatPartyForm.invalid || isAssigning()"
-											data-testid="assign-button"
-											class="relative w-full group bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-600 disabled:to-gray-700 disabled:opacity-50 text-white font-semibold py-4 px-6 mt-6 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-600/25 transform hover:scale-[1.02] disabled:hover:scale-100 disabled:hover:shadow-none">
-
-								@if (isAssigning()) {
-									<app-seating-party/>
-								} @else {
-									<div class="flex items-center justify-center space-x-3">
-										<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-										</svg>
-										<span>Seat Party</span>
-									</div>
-								}
-
-								<!-- Button glow effect -->
-								<div
-										class="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-400 to-blue-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-							</button>
+							<app-submit-button [disabled]="seatPartyForm.invalid"
+																 [isLoading]="isAssigning()"
+																 buttonText="Seat Party"
+																 loadingText="Seating Party..."
+																 (submit)="onAssignTable()"/>
 						}
 					</form>
 				</div>
