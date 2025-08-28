@@ -1,7 +1,7 @@
-import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
+import { HttpInterceptorFn, HttpRequest, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { Table } from '../../shared/models/table.model';
+import { Table, TableStatus } from '../../shared/models/table.model';
 
 const mockTables: Table[] = [
   { id: '1', number: 1, capacity: 2, status: 'available' },
@@ -14,43 +14,110 @@ const mockTables: Table[] = [
   { id: '8', number: 8, capacity: 2, status: 'occupied' }
 ];
 
-export const mockDataInterceptor: HttpInterceptorFn = (req, next) => {
-  // Handle GET /api/tables
-  if (req.method === 'GET' && req.url === '/api/tables') {
-    return of(new HttpResponse({
-      status: 200,
-      body: [...mockTables]
-    })).pipe(delay(500));
+function isGetAllTablesRequest(req: HttpRequest<unknown>) {
+  return req.method === 'GET' && req.url === '/api/tables';
+}
+
+function handleGetAllRequest() {
+  return of(new HttpResponse({
+    status: 200,
+    body: [...mockTables]
+  })).pipe(delay(500));
+}
+
+function isStatusUpdate(req: HttpRequest<unknown>) {
+  const segments = req.url.split('/');
+  return segments[4] === 'status' && req.body;
+}
+
+function updateStatus(req: HttpRequest<unknown>, updatedTable: {
+  id: string;
+  number: number;
+  capacity: number;
+  status: TableStatus
+}) {
+  const body = req.body as { status: Table['status'] };
+  updatedTable.status = body.status;
+}
+
+function isSeatUpdate(req: HttpRequest<unknown>) {
+  const segments = req.url.split('/');
+  return segments[4] === 'seat' && req.body;
+}
+
+function updateSeating(req: HttpRequest<unknown>, updatedTable: {
+  id: string;
+  number: number;
+  capacity: number;
+  status: TableStatus
+}) {
+  const body = req.body as { status: Table['status'] };
+  updatedTable.status = body.status;
+}
+
+function persistTable(tableId: string, updatedTable: {
+  id: string;
+  number: number;
+  capacity: number;
+  status: TableStatus
+}) {
+  const index = mockTables.findIndex(t => t.id === tableId);
+  if (index !== -1) {
+    mockTables[index] = updatedTable;
+  }
+}
+
+function tableWithUpdates(updatedTable: { id: string; number: number; capacity: number; status: TableStatus }) {
+  return of(new HttpResponse({
+    status: 200,
+    body: updatedTable
+  })).pipe(delay(300));
+}
+
+function isTableUpdateRequest(req: HttpRequest<unknown>) {
+  return req.method === 'PATCH' && req.url.startsWith('/api/tables/');
+}
+
+function findTable(req: HttpRequest<unknown>) {
+  const segments = req.url.split('/');
+  const tableId = segments[3];
+  const table = mockTables.find(t => t.id === tableId);
+  return { tableId, table };
+}
+
+function notFound() {
+  return of(new HttpResponse({ status: 404 })).pipe(delay(300));
+}
+
+function handleUpdateRequest(req: HttpRequest<unknown>) {
+  const { tableId, table } = findTable(req);
+
+  if (!table) {
+    return notFound();
   }
 
-  // Handle PATCH /api/tables/:id/status and /api/tables/:id/seat
-  if (req.method === 'PATCH' && req.url.startsWith('/api/tables/')) {
-    const segments = req.url.split('/');
-    const tableId = segments[3];
-    const table = mockTables.find(t => t.id === tableId);
-    
-    if (table) {
-      const updatedTable = { ...table };
-      
-      if (segments[4] === 'status' && req.body) {
-        const body = req.body as { status: Table['status'] };
-        updatedTable.status = body.status;
-      } else if (segments[4] === 'seat' && req.body) {
-        const body = req.body as { status: Table['status'] };
-        updatedTable.status = body.status;
-      }
-      
-      // Update the mock data
-      const index = mockTables.findIndex(t => t.id === tableId);
-      if (index !== -1) {
-        mockTables[index] = updatedTable;
-      }
-      
-      return of(new HttpResponse({
-        status: 200,
-        body: updatedTable
-      })).pipe(delay(300));
-    }
+  const updatedTable = { ...table };
+
+  if (isStatusUpdate(req)) {
+    updateStatus(req, updatedTable);
+  }
+
+  if (isSeatUpdate(req)) {
+    updateSeating(req, updatedTable);
+  }
+
+  persistTable(tableId, updatedTable);
+
+  return tableWithUpdates(updatedTable);
+}
+
+export const mockDataInterceptor: HttpInterceptorFn = (req, next) => {
+  if (isGetAllTablesRequest(req)) {
+    return handleGetAllRequest();
+  }
+
+  if (isTableUpdateRequest(req)) {
+    return handleUpdateRequest(req);
   }
 
   return next(req);
