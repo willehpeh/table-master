@@ -106,7 +106,6 @@ import { PartySizeInputComponent } from './party-size-input';
 })
 export class SeatParty {
   isAssigning = signal(false);
-  // Output event to notify parent component when party is seated
   partySeated = output<void>();
   private tableFacade = inject(TableFacade);
   private fb = inject(FormBuilder);
