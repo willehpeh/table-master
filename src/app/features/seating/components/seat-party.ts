@@ -24,7 +24,7 @@ import { PartySizeInputComponent } from './party-size-input';
 				<div
 						class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-700/30">
 					<form [formGroup]="seatPartyForm" (ngSubmit)="onAssignTable()" class="space-y-6">
-            
+
 						<div class="space-y-3">
 							<app-party-size-input [partySizeCtrl]="partySizeCtrl"/>
 						</div>
@@ -49,7 +49,7 @@ import { PartySizeInputComponent } from './party-size-input';
 									} @else {
 										<div class="relative">
 											<select id="selectedTable"
-															formControlName="selectedTableId"
+															[formControl]="selectedTableIdCtrl"
 															data-testid="table-select"
 															class="w-full px-4 py-4 bg-gray-700/50 border border-gray-600/50 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200 backdrop-blur-sm appearance-none cursor-pointer">
 												<option value="">Choose a table...</option>
@@ -110,10 +110,13 @@ export class SeatParty {
   private tableFacade = inject(TableFacade);
   private router = inject(Router);
   private fb = inject(FormBuilder);
-  partySizeCtrl = this.fb.control(null, [Validators.required, Validators.min(1), Validators.max(12)]);
+  partySizeCtrl = this.fb.control(null, {
+    validators: [Validators.required, Validators.min(1), Validators.max(12)]
+  });
+  selectedTableIdCtrl = this.fb.control('', { nonNullable: true, validators: [Validators.required] });
   seatPartyForm = this.fb.group({
     partySize: this.partySizeCtrl,
-    selectedTableId: ['', Validators.required]
+    selectedTableId: this.selectedTableIdCtrl,
   });
   private partySizeSignal = signal<number | null>(null);
   partySize = computed(() => this.partySizeSignal());
@@ -136,25 +139,22 @@ export class SeatParty {
     if (!this.seatPartyForm.valid) {
       return;
     }
-    const { partySize, selectedTableId } = this.seatPartyForm.value;
-    this.isAssigning.set(true);
-
-    this.assignTable(selectedTableId!, partySize!);
+    this.assignTable(this.selectedTableIdCtrl.value, this.partySizeCtrl.value!);
   }
 
   private assignTable(selectedTableId: string, partySize: number) {
-    this.tableFacade.seatPartyAtTable(selectedTableId, partySize)
-      .pipe(
-        tap(() => {
-          this.isAssigning.set(false);
-          this.seatPartyForm.reset();
-          this.router.navigate(['/tables']);
-        }),
-        catchError(error => {
-          console.error('Failed to seat party:', error);
-          return EMPTY;
-        })
-      ).subscribe();
+    this.isAssigning.set(true);
+    this.tableFacade.seatPartyAtTable(selectedTableId, partySize).pipe(
+      tap(() => {
+        this.isAssigning.set(false);
+        this.seatPartyForm.reset();
+        this.router.navigate(['/tables']);
+      }),
+      catchError(error => {
+        console.error('Failed to seat party:', error);
+        return EMPTY;
+      })
+    ).subscribe();
   }
 
   private updatePartySizeSignalOnFormCtrlChange() {
@@ -162,10 +162,12 @@ export class SeatParty {
       takeUntilDestroyed(),
       debounceTime(300),
       distinctUntilChanged(),
-      tap(value => {
-        const numValue = value ? Number(value) : null;
-        this.partySizeSignal.set(numValue);
-      })
+      tap(value => this.updatePartySize(value))
     ).subscribe();
+  }
+
+  private updatePartySize(value: number | null) {
+    const numValue = value ? Number(value) : null;
+    this.partySizeSignal.set(numValue);
   }
 }
