@@ -1,6 +1,6 @@
-import { Component, input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Table } from '../../../../shared/models/table.model';
+import { TableFacade } from '../../../../core/facades/table.facade';
 import { EmptyTableComponent } from './table/empty-table';
 import { TableComponent } from './table/table';
 
@@ -28,5 +28,7 @@ import { TableComponent } from './table/table';
   `
 })
 export class TableStatusList {
-  tables = input<Table[]>([]);
+  protected tableFacade = inject(TableFacade);
+  
+  protected tables = this.tableFacade.allTables();
 }

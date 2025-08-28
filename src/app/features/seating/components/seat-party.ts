@@ -1,6 +1,7 @@
-import { Component, computed, inject, output, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TableFacade } from '../../../core/facades/table.facade';
 import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { NoAvailableTablesComponent } from './no-available-tables';
@@ -106,8 +107,8 @@ import { PartySizeInputComponent } from './party-size-input';
 })
 export class SeatParty {
   isAssigning = signal(false);
-  partySeated = output<void>();
   private tableFacade = inject(TableFacade);
+  private router = inject(Router);
   private fb = inject(FormBuilder);
   partySizeCtrl = this.fb.control(null, [Validators.required, Validators.min(1), Validators.max(12)]);
   seatPartyForm = this.fb.group({
@@ -147,7 +148,7 @@ export class SeatParty {
         tap(() => {
           this.isAssigning.set(false);
           this.seatPartyForm.reset();
-          this.partySeated.emit();
+          this.router.navigate(['/tables']);
         }),
         catchError(error => {
           console.error('Failed to seat party:', error);

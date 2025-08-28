@@ -1,13 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TableStatusList } from './features/tables/components/table-status-list/table-status-list';
-import { SeatParty } from './features/seating/components/seat-party';
-import { TableFacade } from './core/facades/table.facade';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, TableStatusList, SeatParty],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
   template: `
     <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 text-white">
       <header class="bg-gray-800/90 backdrop-blur-xl border-b border-gray-700/50 sticky top-0 z-50">
@@ -24,22 +22,22 @@ import { TableFacade } from './core/facades/table.facade';
               </div>
             </div>
             <nav class="flex items-center space-x-2">
-              <button (click)="currentView.set('tables')" 
-                      [class]="currentView() === 'tables' ? 'bg-blue-600/90 shadow-lg shadow-blue-600/25' : 'bg-gray-700/50 hover:bg-gray-600/50'"
-                      class="px-6 py-3 rounded-xl text-white font-medium transition-all duration-200 border border-gray-600/30 hover:border-gray-500/50 backdrop-blur-sm">
+              <a routerLink="/tables" 
+                 routerLinkActive="!bg-blue-600/90 !shadow-lg !shadow-blue-600/25 [&_.indicator]:!bg-blue-300"
+                 class="bg-gray-700/50 hover:bg-gray-600/50 px-6 py-3 rounded-xl text-white font-medium transition-all duration-200 border border-gray-600/30 hover:border-gray-500/50 backdrop-blur-sm">
                 <span class="flex items-center space-x-2">
-                  <span class="w-2 h-2 rounded-full" [class]="currentView() === 'tables' ? 'bg-blue-300' : 'bg-gray-400'"></span>
+                  <span class="indicator w-2 h-2 rounded-full bg-gray-400"></span>
                   <span>Tables</span>
                 </span>
-              </button>
-              <button (click)="currentView.set('seating')"
-                      [class]="currentView() === 'seating' ? 'bg-blue-600/90 shadow-lg shadow-blue-600/25' : 'bg-gray-700/50 hover:bg-gray-600/50'"
-                      class="px-6 py-3 rounded-xl text-white font-medium transition-all duration-200 border border-gray-600/30 hover:border-gray-500/50 backdrop-blur-sm">
+              </a>
+              <a routerLink="/seating"
+                 routerLinkActive="!bg-blue-600/90 !shadow-lg !shadow-blue-600/25 [&_.indicator]:!bg-blue-300"
+                 class="bg-gray-700/50 hover:bg-gray-600/50 px-6 py-3 rounded-xl text-white font-medium transition-all duration-200 border border-gray-600/30 hover:border-gray-500/50 backdrop-blur-sm">
                 <span class="flex items-center space-x-2">
-                  <span class="w-2 h-2 rounded-full" [class]="currentView() === 'seating' ? 'bg-blue-300' : 'bg-gray-400'"></span>
+                  <span class="indicator w-2 h-2 rounded-full bg-gray-400"></span>
                   <span>Seating</span>
                 </span>
-              </button>
+              </a>
             </nav>
           </div>
         </div>
@@ -47,23 +45,11 @@ import { TableFacade } from './core/facades/table.facade';
       
       <main class="max-w-7xl mx-auto py-8">
         <div class="transition-all duration-300 ease-in-out">
-          @if (currentView() === 'tables') {
-            <app-table-status-list [tables]="tableFacade.allTables()()" />
-          } @else if (currentView() === 'seating') {
-            <app-seat-party (partySeated)="onPartySeated()" />
-          }
+          <router-outlet />
         </div>
       </main>
     </div>
   `
 })
 export class AppComponent {
-  currentView = signal<'tables' | 'seating'>('tables');
-
-  protected tableFacade = inject(TableFacade);
-
-  onPartySeated(): void {
-    // Redirect to tables page after successfully seating a party
-    this.currentView.set('tables');
-  }
 }
