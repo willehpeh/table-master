@@ -3,21 +3,17 @@ import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { NoAvailableTablesComponent } from './no-available-tables';
 import { Table } from '../../../shared/models/table.model';
+import { AvailableTablesIcon } from './available-tables-icon';
 
 @Component({
   selector: 'app-table-selection',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NoAvailableTablesComponent],
+  imports: [CommonModule, ReactiveFormsModule, NoAvailableTablesComponent, AvailableTablesIcon],
   template: `
 		<div class="space-y-6 animate-in slide-in-from-bottom-4 duration-300">
-			<!-- Available Tables Section -->
 			<div class="space-y-3">
 				<label for="selectedTable" class="flex items-center space-x-2 text-sm font-medium text-gray-300">
-					<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-						<path fill-rule="evenodd"
-									d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-									clip-rule="evenodd"/>
-					</svg>
+					<app-available-tables-icon/>
 					<span>Available Tables</span>
 				</label>
 
