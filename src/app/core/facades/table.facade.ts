@@ -2,7 +2,7 @@ import { computed, inject, Injectable, signal, Signal } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { TableApiService } from '../services/table-api.service';
-import { Table, TableStatus } from '../../shared/models/table.model';
+import { Table } from '../../shared/models/table.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,16 +30,6 @@ export class TableFacade {
       const tables = this.allTables()();
       return tables.filter(table => table.status === 'available' && table.capacity >= partySize);
     });
-  }
-
-  updateTableStatus(tableId: string, status: TableStatus): Observable<Table> {
-    return this.apiService.updateTableStatus(tableId, status).pipe(
-      tap(updatedTable => {
-        const current = this.tablesState();
-        const updated = current.map(t => t.id === tableId ? updatedTable : t);
-        this.tablesState.set(updated);
-      })
-    );
   }
 
   seatPartyAtTable(tableId: string, partySize: number): Observable<Table> {
