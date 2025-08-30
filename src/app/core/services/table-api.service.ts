@@ -3,9 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Table, TableStatus } from '../../shared/models/table.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TableApiService {
   private http = inject(HttpClient);
   private apiUrl = '/api/tables';
@@ -19,9 +17,9 @@ export class TableApiService {
   }
 
   seatPartyAtTable(tableId: string, partySize: number): Observable<Table> {
-    return this.http.patch<Table>(`${this.apiUrl}/${tableId}/seat`, { 
-      status: 'occupied' as TableStatus, 
-      partySize 
+    return this.http.patch<Table>(`${this.apiUrl}/${tableId}/seat`, {
+      status: 'occupied' as TableStatus,
+      partySize
     });
   }
 }

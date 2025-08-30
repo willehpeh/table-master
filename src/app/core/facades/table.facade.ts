@@ -4,9 +4,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { TableApiService } from '../services/table-api.service';
 import { Table } from '../../shared/models/table.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TableFacade {
   private apiService = inject(TableApiService);
 

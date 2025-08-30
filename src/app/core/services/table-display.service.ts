@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TableStatus } from '../../shared/models/table.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TableDisplayService {
 
   private FORMATTED_STATUSES: Record<TableStatus, string> = {
