@@ -5,10 +5,6 @@ import { TableStatus } from '../../shared/models/table.model';
 import { inject } from '@angular/core';
 import { MockDataRepository } from './mock-data.repository';
 
-function isGetAllTablesRequest(req: HttpRequest<unknown>) {
-  return req.method === 'GET' && req.url === '/api/tables';
-}
-
 function handleGetAllRequest(repository: MockDataRepository) {
   return of(new HttpResponse({
     status: 200,
@@ -21,10 +17,6 @@ function tableWithUpdates(updatedTable: { id: string; number: number; capacity: 
     status: 200,
     body: updatedTable
   })).pipe(delay(300));
-}
-
-function isTableUpdateRequest(req: HttpRequest<unknown>) {
-  return req.method === 'PATCH' && req.url.startsWith('/api/tables/');
 }
 
 function notFound() {
@@ -49,11 +41,11 @@ export const mockDataInterceptor: HttpInterceptorFn = (req, next) => {
 
   const repository = inject(MockDataRepository);
 
-  if (isGetAllTablesRequest(req)) {
+  if (req.method === 'GET' && req.url === '/api/tables') {
     return handleGetAllRequest(repository);
   }
 
-  if (isTableUpdateRequest(req)) {
+  if (req.method === 'PATCH' && req.url.startsWith('/api/tables/')) {
     return handleUpdateRequest(req, repository);
   }
 
