@@ -22,6 +22,6 @@ import { PartyIcon } from './party-icon';
 		</div>
   `
 })
-export class PartySizeInputComponent {
+export class PartySizeInput {
   partySizeCtrl = input.required<FormControl>();
 }

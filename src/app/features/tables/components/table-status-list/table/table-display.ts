@@ -1,14 +1,14 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { Table, TableStatus } from '../../../../../shared/models/table.model';
 import { TableDisplayService } from '../../../../../core/services/table-display.service';
-import { TableIconComponent } from './table-icon';
-import { TableStatusDotComponent } from './table-status-dot';
+import { TableIcon } from './table-icon';
+import { TableStatusDot } from './table-status-dot';
 
 @Component({
   selector: 'app-table',
   imports: [
-    TableIconComponent,
-    TableStatusDotComponent
+    TableIcon,
+    TableStatusDot
   ],
   template: `
 		<div
@@ -28,7 +28,7 @@ import { TableStatusDotComponent } from './table-status-dot';
 		</div>
   `
 })
-export class TableComponent {
+export class TableDisplay {
   private displayService = inject(TableDisplayService);
   private DOT_COLORS: Record<TableStatus, string> = {
     available: 'bg-green-400',

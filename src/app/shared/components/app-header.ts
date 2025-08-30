@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NavLinkComponent } from './nav-link';
+import { NavLink } from './nav-link';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [NavLinkComponent],
+  imports: [NavLink],
   template: `
     <header class="bg-gray-800/90 backdrop-blur-xl border-b border-gray-700/50 sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,5 +28,5 @@ import { NavLinkComponent } from './nav-link';
     </header>
   `
 })
-export class AppHeaderComponent {
+export class AppHeader {
 }

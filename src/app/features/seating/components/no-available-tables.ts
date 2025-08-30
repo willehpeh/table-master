@@ -18,6 +18,6 @@ import { Component, input } from '@angular/core';
 		</div>
   `
 })
-export class NoAvailableTablesComponent {
+export class NoAvailableTables {
   partySize = input<number>(0);
 }

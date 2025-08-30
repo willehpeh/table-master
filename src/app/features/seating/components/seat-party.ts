@@ -6,14 +6,14 @@ import { TableFacade } from '../../../core/facades/table.facade';
 import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EMPTY } from 'rxjs';
-import { PartySizeInputComponent } from './party-size-input';
-import { TableSelectionComponent } from './table-selection';
-import { SubmitButtonComponent } from './submit-button';
+import { PartySizeInput } from './party-size-input';
+import { TableSelection } from './table-selection';
+import { SubmitButton } from './submit-button';
 
 @Component({
   selector: 'app-seat-party',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, PartySizeInputComponent, TableSelectionComponent, SubmitButtonComponent],
+  imports: [ReactiveFormsModule, CommonModule, PartySizeInput, TableSelection, SubmitButton],
   template: `
 		<div class="px-4 sm:px-6">
 			<div class="max-w-lg mx-auto">

@@ -8,6 +8,6 @@ import { Component, input } from '@angular/core';
 		</div>
   `
 })
-export class TableStatusDotComponent {
+export class TableStatusDot {
   dotColor = input.required<string>();
 }

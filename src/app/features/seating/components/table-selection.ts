@@ -1,14 +1,14 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { NoAvailableTablesComponent } from './no-available-tables';
+import { NoAvailableTables } from './no-available-tables';
 import { AvailableTablesIcon } from './available-tables-icon';
 import { TableFacade } from '../../../core/facades/table.facade';
 
 @Component({
   selector: 'app-table-selection',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NoAvailableTablesComponent, AvailableTablesIcon],
+  imports: [CommonModule, ReactiveFormsModule, NoAvailableTables, AvailableTablesIcon],
   template: `
 		<div class="space-y-6 animate-in slide-in-from-bottom-4 duration-300 mb-6">
 			<div class="space-y-3">
@@ -43,7 +43,7 @@ import { TableFacade } from '../../../core/facades/table.facade';
 		</div>
   `
 })
-export class TableSelectionComponent {
+export class TableSelection {
   private tableFacade = inject(TableFacade);
 
   partySize = input.required<number>();

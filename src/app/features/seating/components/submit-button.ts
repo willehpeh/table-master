@@ -35,7 +35,7 @@ import { CommonModule } from '@angular/common';
     </button>
   `
 })
-export class SubmitButtonComponent {
+export class SubmitButton {
   disabled = input<boolean>(false);
   isLoading = input<boolean>(false);
   buttonText = input<string>('Submit');

@@ -19,7 +19,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     </a>
   `
 })
-export class NavLinkComponent {
+export class NavLink {
   routerLink = input.required<string>();
   label = input.required<string>();
 }

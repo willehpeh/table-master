@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableFacade } from '../../../../core/facades/table.facade';
-import { EmptyTableComponent } from './table/empty-table';
-import { TableComponent } from './table/table';
+import { EmptyTable } from './table/empty-table';
+import { TableDisplay } from './table/table-display';
 
 @Component({
   selector: 'app-table-status-list',
   standalone: true,
-  imports: [CommonModule, EmptyTableComponent, TableComponent],
+  imports: [CommonModule, EmptyTable, TableDisplay],
   template: `
 		<div class="px-4 sm:px-6">
 			<div class="mb-8">
@@ -29,6 +29,6 @@ import { TableComponent } from './table/table';
 })
 export class TableStatusList {
   protected tableFacade = inject(TableFacade);
-  
+
   protected tables = this.tableFacade.allTables();
 }

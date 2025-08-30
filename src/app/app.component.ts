@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { AppHeaderComponent } from './shared/components/app-header';
+import { AppHeader } from './shared/components/app-header';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, AppHeaderComponent],
+  imports: [CommonModule, RouterOutlet, AppHeader],
   template: `
     <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 text-white">
       <app-header />
@@ -19,5 +19,5 @@ import { AppHeaderComponent } from './shared/components/app-header';
     </div>
   `
 })
-export class AppComponent {
+export class App {
 }
