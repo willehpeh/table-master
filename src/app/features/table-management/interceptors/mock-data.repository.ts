@@ -1,4 +1,4 @@
-import { Table, TableStatus } from '../../shared/models/table.model';
+import { Table, TableStatus } from '../models/table.model';
 import { Injectable } from '@angular/core';
 
 @Injectable({

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TableFacade } from '../../../../core/facades/table.facade';
+import { TableFacade } from '../../../facades/table.facade';
 import { EmptyTable } from './table/empty-table';
 import { TableDisplay } from './table/table-display';
 

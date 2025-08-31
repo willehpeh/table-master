@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TableStatus } from '../../shared/models/table.model';
+import { TableStatus } from '../models/table.model';
 
 @Injectable()
 export class TableDisplayService {

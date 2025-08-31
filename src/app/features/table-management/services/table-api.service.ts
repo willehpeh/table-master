@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Table, TableStatus } from '../../shared/models/table.model';
+import { Table, TableStatus } from '../models/table.model';
 
 @Injectable()
 export class TableApiService {

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { NoAvailableTables } from './no-available-tables';
 import { AvailableTablesIcon } from './available-tables-icon';
-import { TableFacade } from '../../../core/facades/table.facade';
+import { TableFacade } from '../../facades/table.facade';
 
 @Component({
   selector: 'app-table-selection',

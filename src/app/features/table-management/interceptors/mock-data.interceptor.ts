@@ -1,7 +1,7 @@
 import { HttpInterceptorFn, HttpRequest, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { TableStatus } from '../../shared/models/table.model';
+import { TableStatus } from '../models/table.model';
 import { inject } from '@angular/core';
 import { MockDataRepository } from './mock-data.repository';
 

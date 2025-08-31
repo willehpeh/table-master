@@ -2,7 +2,7 @@ import { computed, inject, Injectable, signal, Signal } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { TableApiService } from '../services/table-api.service';
-import { Table } from '../../shared/models/table.model';
+import { Table } from '../models/table.model';
 
 @Injectable()
 export class TableFacade {
