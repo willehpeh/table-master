@@ -6,10 +6,3 @@ export interface Table {
   capacity: number;
   status: TableStatus;
 }
-
-export interface WaitlistCustomer {
-  id: string;
-  name: string;
-  partySize: number;
-  waitingSince: Date;
-}
