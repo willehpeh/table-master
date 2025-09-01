@@ -4,10 +4,10 @@ import { Component, input } from '@angular/core';
   selector: 'app-table-status-dot',
   template: `
 		<div class="absolute top-3 right-3 w-3 h-3 rounded-full animate-pulse"
-				 [class]="dotColor()">
+				 [class]="dotColorClass()">
 		</div>
   `
 })
 export class TableStatusDot {
-  dotColor = input.required<string>();
+  dotColorClass = input.required<string>();
 }

@@ -16,7 +16,7 @@ import { TableStatusDot } from './table-status-dot';
 				[class]="statusColor()"
 				[attr.data-testid]="'table-' + table().id + '-status'">
 
-			<app-table-status-dot [dotColor]="getStatusDotColor(table().status)"/>
+			<app-table-status-dot [dotColorClass]="getStatusDotColor(table().status)"/>
 			<app-table-icon/>
 
 			<div class="space-y-1">
