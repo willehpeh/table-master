@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TableFacade } from '../../../facades/table.facade';
 import { EmptyTable } from './table/empty-table';
 import { TableDisplay } from './table/table-display';
+import { TableFacade } from '../../../facades/table.facade';
 
 @Component({
   selector: 'app-table-status-list',
