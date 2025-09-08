@@ -1,41 +1,35 @@
 import { TableDisplayService } from './table-display.service';
-import { TableStatus } from '../models/table.model';
 
 describe('TableDisplayService', () => {
 
-  it('should return "Available"', () => {
-    const service = new TableDisplayService();
-    const status = service.formatStatus('available');
+  let service: TableDisplayService;
 
-    expect(status).toBe('Available');
+  beforeEach(() => {
+    service = new TableDisplayService();
+  });
+
+  it('should return "Available"', () => {
+    expectFormattedStatus('available', 'Available');
   });
 
   it('should return "Occupied"', () => {
-    const service = new TableDisplayService();
-    const status = service.formatStatus('occupied');
-
-    expect(status).toBe('Occupied');
+    expectFormattedStatus('occupied', 'Occupied');
   });
 
   it('should return "Being Cleaned"', () => {
-    const service = new TableDisplayService();
-    const status = service.formatStatus('cleaning');
-
-    expect(status).toBe('Being Cleaned');
+    expectFormattedStatus('cleaning', 'Being Cleaned');
   });
 
   it('should return "Reserved"', () => {
-    const service = new TableDisplayService();
-    const status = service.formatStatus('reserved');
-
-    expect(status).toBe('Reserved');
+    expectFormattedStatus('reserved', 'Reserved');
   });
 
   it('should return "Unknown" if the requested status is not recognized', () => {
-    const service = new TableDisplayService();
-    const status = service.formatStatus('invalid');
-
-    expect(status).toBe('Unknown');
+    expectFormattedStatus('invalid status', 'Unknown');
   });
+
+  function expectFormattedStatus(status: string, expected: string) {
+    expect(service.formatStatus(status)).toBe(expected);
+  }
 
 });
