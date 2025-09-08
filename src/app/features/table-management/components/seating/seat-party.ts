@@ -2,13 +2,13 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TableFacade } from '../../facades/table.facade';
 import { catchError, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EMPTY } from 'rxjs';
 import { PartySizeInput } from './party-size-input';
 import { TableSelection } from './table-selection';
 import { SubmitButton } from './submit-button';
+import { TableFacade } from '../../facades/table.facade';
 
 @Component({
   selector: 'app-seat-party',

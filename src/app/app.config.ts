@@ -4,9 +4,11 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import { mockDataInterceptor } from './features/table-management/interceptors/mock-data.interceptor';
-import { TableFacade } from './features/table-management/facades/table.facade';
-import { TableApiService } from './features/table-management/services/table-api.service';
+import { DirectApiTableFacade } from './features/table-management/facades/direct-api-table.facade';
+import { ApiTableService } from './features/table-management/services/api-table.service';
 import { TableDisplayService } from './features/table-management/services/table-display.service';
+import { TableService } from './features/table-management/services/table.service';
+import { TableFacade } from './features/table-management/facades/table.facade';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,8 +18,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([mockDataInterceptor])
     ),
-    TableFacade,
-    TableApiService,
+    { provide: TableFacade, useClass: DirectApiTableFacade },
+    { provide: TableService, useClass: ApiTableService },
     TableDisplayService
   ]
 };
