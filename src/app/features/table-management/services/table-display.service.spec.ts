@@ -31,7 +31,7 @@ describe('TableDisplayService', () => {
     expect(status).toBe('Reserved');
   });
 
-  it('should return "Unknown"', () => {
+  it('should return "Unknown" if the requested status is not recognized', () => {
     const service = new TableDisplayService();
     const status = service.formatStatus('invalid');
 
