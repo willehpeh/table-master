@@ -4,7 +4,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import { mockDataInterceptor } from './features/table-management/interceptors/mock-data.interceptor';
-import { DirectApiTableFacade } from './features/table-management/facades/direct-api-table.facade';
+import { ApiTableFacade } from './features/table-management/facades/api-table.facade';
 import { ApiTableService } from './features/table-management/services/api-table.service';
 import { TableDisplayService } from './features/table-management/services/table-display.service';
 import { TableService } from './features/table-management/services/table.service';
@@ -18,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([mockDataInterceptor])
     ),
-    { provide: TableFacade, useClass: DirectApiTableFacade },
+    { provide: TableFacade, useClass: ApiTableFacade },
     { provide: TableService, useClass: ApiTableService },
     TableDisplayService
   ]
