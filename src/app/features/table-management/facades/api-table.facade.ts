@@ -6,7 +6,7 @@ import { TableFacade } from './table.facade';
 import { TableService } from '../services/table.service';
 
 @Injectable()
-export class DirectApiTableFacade implements TableFacade {
+export class ApiTableFacade implements TableFacade {
   private apiService = inject(TableService);
 
   private tablesState = signal<Table[]>([]);
