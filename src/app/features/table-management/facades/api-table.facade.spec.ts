@@ -5,6 +5,7 @@ import { TableService } from '../services/table.service';
 import { ApiTableService } from '../services/api-table.service';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { TEST_TABLES } from '../../../test-data/test-tables';
 
 describe('ApiTableFacade', () => {
   let facade: ApiTableFacade;
@@ -31,6 +32,10 @@ describe('ApiTableFacade', () => {
 
   it('should load all tables if they are not already loaded', () => {
     const tables = facade.allTables();
+    httpCtrl.expectOne('/api/tables').flush(TEST_TABLES);
+
+    const expectedTables = [...TEST_TABLES];
+    expect(tables()).toEqual(expectedTables);
   });
 
   afterEach(() => {
