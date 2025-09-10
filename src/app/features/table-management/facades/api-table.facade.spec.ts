@@ -32,10 +32,10 @@ describe('ApiTableFacade', () => {
 
   it('should load all tables if they are not already loaded', () => {
     const tables = facade.allTables();
-    httpCtrl.expectOne('/api/tables').flush(TEST_TABLES);
+    const req = httpCtrl.expectOne('/api/tables');
+    req.flush(TEST_TABLES);
 
-    const expectedTables = [...TEST_TABLES];
-    expect(tables()).toEqual(expectedTables);
+    expect(tables()).toEqual(TEST_TABLES);
   });
 
   afterEach(() => {
