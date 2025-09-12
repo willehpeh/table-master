@@ -13,8 +13,7 @@ import { TableStatusDot } from './table-status-dot';
   template: `
 		<div
 				class="group relative table-status-badge rounded-2xl p-5 text-center shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl border border-opacity-20"
-				[class]="statusColor()"
-				[attr.data-testid]="'table-' + table().id + '-status'">
+				[class]="statusColor()">
 
 			<app-table-status-dot [dotColorClass]="getStatusDotColor(table().status)"/>
 			<app-table-icon/>
