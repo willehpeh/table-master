@@ -21,13 +21,18 @@ export class ApiTableFacade implements TableFacade {
   }
 
   availableTablesForPartySize(partySize: number): Signal<Table[]> {
+    if (partySize > 0 && !this.tablesLoaded()) {
+      this.loadTables();
+    }
+    return this.availableTablesInState(partySize);
+  }
+
+  private availableTablesInState(partySize: number) {
     return computed(() => {
-      if (!partySize || partySize <= 0) {
+      if (partySize <= 0) {
         return [];
       }
-
-      const tables = this.allTables()();
-      return tables.filter(table => table.status === 'available' && table.capacity >= partySize);
+      return this.tablesState().filter(table => table.status === 'available' && table.capacity >= partySize);
     });
   }
 
