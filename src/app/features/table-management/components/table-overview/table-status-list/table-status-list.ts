@@ -17,7 +17,7 @@ import { TableFacade } from '../../../facades/table.facade';
 
 			<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-6">
 				@for (table of tables(); track table.id) {
-					<app-table [table]="table" />
+					<app-table [table]="table" data-testid="table" />
 				} @empty {
 					<div class="col-span-full text-center py-16">
 						<app-empty-table data-testid="no-tables-message"/>
