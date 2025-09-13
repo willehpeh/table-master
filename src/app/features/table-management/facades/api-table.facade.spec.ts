@@ -38,6 +38,29 @@ describe('ApiTableFacade', () => {
     expect(tables()).toEqual(TEST_TABLES);
   });
 
+  describe('Available tables', () => {
+
+    it('should show no tables available for a negative party size', () => {
+      const tables = facade.availableTablesForPartySize(-1);
+      expect(tables()).toEqual([]);
+    });
+
+    it('should show no tables available for a party size of 0', () => {
+      const tables = facade.availableTablesForPartySize(0);
+      expect(tables()).toEqual([]);
+    });
+
+    it('should show all available tables with sufficient capacity', () => {
+      const partySize = 5;
+      const tables = facade.availableTablesForPartySize(partySize);
+      const req = httpCtrl.expectOne('/api/tables');
+      req.flush(TEST_TABLES);
+      const expected = TEST_TABLES.filter(table => table.capacity >= partySize && table.status === 'available');
+      expect(tables()).toEqual(expected);
+    });
+
+  });
+
   afterEach(() => {
     httpCtrl.verify();
   });
