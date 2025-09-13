@@ -61,6 +61,18 @@ describe('ApiTableFacade', () => {
 
   });
 
+  describe('Seat party at table', () => {
+
+    it('should update the table on the server', () => {
+      const tableId = 'table1';
+      const partySize = 5;
+      facade.seatPartyAtTable(tableId, partySize).subscribe();
+      const req = httpCtrl.expectOne(`/api/tables/${ tableId }/seat`);
+      expect(req.request.body).toEqual({ status: 'occupied', partySize});
+    });
+
+  });
+
   afterEach(() => {
     httpCtrl.verify();
   });
