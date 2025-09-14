@@ -6,6 +6,7 @@ import { ApiTableService } from '../services/api-table.service';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TEST_TABLES } from '../../../test-data/test-tables';
+import { Table } from '../models/table.model';
 
 describe('ApiTableFacade', () => {
   let facade: ApiTableFacade;
@@ -70,6 +71,33 @@ describe('ApiTableFacade', () => {
       const req = httpCtrl.expectOne(`/api/tables/${ tableId }/seat`);
       expect(req.request.body).toEqual({ status: 'occupied', partySize});
     });
+
+    it('should mark the table as occupied', () => {
+      const table: Table = { id: 'table1', status: 'available', capacity: 6, number: 1 };
+      const tables = facade.allTables();
+      const req = httpCtrl.expectOne(`/api/tables`);
+      req.flush([table]);
+      facade.seatPartyAtTable(table.id, table.capacity).subscribe();
+      const occupiedTable: Table = { ...table, status: 'occupied' };
+      httpCtrl.expectOne(`/api/tables/${ table.id }/seat`).flush(occupiedTable);
+      expect(tables()).toEqual([occupiedTable]);
+    });
+
+    it('should mark the table as occupied (REFACTORED)', () => {
+      const table: Table = { id: 'table1', status: 'available', capacity: 6, number: 1 };
+      const tables = allTablesFlushedWith(table);
+      facade.seatPartyAtTable(table.id, table.capacity).subscribe();
+      const occupiedTable: Table = { ...table, status: 'occupied' };
+      httpCtrl.expectOne(`/api/tables/${ table.id }/seat`).flush(occupiedTable);
+      expect(tables()).toEqual([occupiedTable]);
+    });
+
+    function allTablesFlushedWith(table: Table) {
+      const tables = facade.allTables();
+      const req = httpCtrl.expectOne(`/api/tables`);
+      req.flush([table]);
+      return tables;
+    }
 
   });
 
