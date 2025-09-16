@@ -69,8 +69,15 @@ describe('TableStatusList', () => {
     it('should display the right capacity for each table', () => {
       const capacityElements = debugElement.queryAll(By.css('[data-testid="table-capacity"]'));
       const capacityTextValues = capacityElements.map(element => element.nativeElement.textContent);
-      const expectedTextValues = TEST_TABLES.map(t => `${t.capacity} seats`);
+      const expectedTextValues = TEST_TABLES.map(table => `${table.capacity} seats`);
       expect(capacityTextValues).toEqual(expectedTextValues);
+    });
+
+    it('should display the correct table number for each table', () => {
+      const numberElements = debugElement.queryAll(By.css('[data-testid="table-number"]'));
+      const numberTextValues = numberElements.map(element => element.nativeElement.textContent);
+      const expectedTextValues = TEST_TABLES.map(table => `${table.number}`);
+      expect(numberTextValues).toEqual(expectedTextValues);
     });
 
   });

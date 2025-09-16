@@ -19,7 +19,7 @@ import { TableStatusDot } from './table-status-dot';
 			<app-table-icon/>
 
 			<div class="space-y-1">
-				<div class="text-xl font-bold">{{ table().number }}</div>
+				<div class="text-xl font-bold" data-testid="table-number">{{ table().number }}</div>
 				<div class="text-sm font-medium opacity-90">{{ formattedStatus() }}</div>
 				<div class="text-xs opacity-70" data-testid="table-capacity">{{ table().capacity }} seats</div>
 			</div>
