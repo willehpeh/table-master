@@ -21,7 +21,7 @@ import { TableStatusDot } from './table-status-dot';
 			<div class="space-y-1">
 				<div class="text-xl font-bold">{{ table().number }}</div>
 				<div class="text-sm font-medium opacity-90">{{ formattedStatus() }}</div>
-				<div class="text-xs opacity-70">{{ table().capacity }} seats</div>
+				<div class="text-xs opacity-70" data-testid="table-capacity">{{ table().capacity }} seats</div>
 			</div>
       
 		</div>
